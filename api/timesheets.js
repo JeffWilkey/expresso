@@ -13,7 +13,8 @@ timesheetRouter.get('/', (req, res, next) => {
   const sql = 'SELECT * FROM Timesheet WHERE employee_id = $employeeId';
   const values = { $employeeId: req.params.employeeId };
   db.all(sql, values, (error, timesheets) => {
-    res.status(200).json({ timesheets });
+    if (error) next(error);
+    else res.status(200).json({ timesheets });
   });
 });
 
@@ -32,7 +33,8 @@ timesheetRouter.post('/', (req, res, next) => {
       next(error);
     } else {
       db.get(`SELECT * FROM Timesheet WHERE Timesheet.id = ${this.lastID}`, (err, timesheet) => {
-        res.status(201).json({ timesheet });
+        if (err) next(err);
+        else res.status(201).json({ timesheet });
       });
     }
   });
@@ -68,7 +70,8 @@ timesheetRouter.put('/:timesheetId', (req, res, next) => {
       next(error);
     } else {
       db.get(`SELECT * FROM Timesheet WHERE Timesheet.id = ${req.params.timesheetId}`, (err, timesheet) => {
-        res.status(200).json({ timesheet });
+        if (err) next(err);
+        else res.status(200).json({ timesheet });
       });
     }
   });
