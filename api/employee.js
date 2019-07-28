@@ -14,7 +14,8 @@ employeeRouter.use('/:employeeId/timesheets', timesheetRouter);
 
 employeeRouter.get('/', (req, res) => {
   db.all('SELECT * FROM Employee WHERE is_current_employee = 1', (err, employees) => {
-    res.status(200).json({ employees });
+    if (err) next(err);
+    else res.status(200).json({ employees });
   });
 });
 
@@ -53,7 +54,8 @@ employeeRouter.post('/', (req, res, next) => {
       next(error);
     } else {
       db.get(`SELECT * FROM Employee WHERE Employee.id = ${this.lastID}`, (err, employee) => {
-        res.status(201).json({ employee });
+        if (err) next(err);
+        else res.status(201).json({ employee });
       });
     }
   });
@@ -76,7 +78,8 @@ employeeRouter.put('/:employeeId', (req, res, next) => {
       next(error)
     } else {
       db.get(`SELECT * FROM Employee WHERE Employee.id = ${req.params.employeeId}`, (err, employee) => {
-        res.status(200).json({ employee });
+        if (err) next(err);
+        else res.status(200).json({ employee });
       });
     }
   });
@@ -90,7 +93,8 @@ employeeRouter.delete('/:employeeId', (req, res, next) => {
       next(error);
     } else {
       db.get(`SELECT * FROM Employee WHERE Employee.id = ${req.params.employeeId}`, (err, employee) => {
-        res.status(200).json({ employee });
+        if (err) next(err);
+        else res.status(200).json({ employee });
       });
     }
   });
